@@ -1,0 +1,35 @@
+{% extends 'master.html' %}
+{% block content %}
+    <form method="post" action="{% url 'employees:designation_store' %}">
+    {% csrf_token %}
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h3>Add Designations</h3>
+            </div>
+            <div class="card-body">
+                {% if errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                          {% for field_errors in errors.values %}
+                            {% for error in field_errors %}
+                              <li>{{ error }}</li>
+                            {% endfor %}
+                          {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="row align-items-center">
+                    <div class="col-2">
+                        <label for="name" class="col-form-label">Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" id="name" name="name" class="form-control ">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                <a href="#"></a><button type="submit" class="btn btn-danger mt-3">Cancel</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

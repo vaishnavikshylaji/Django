@@ -1,0 +1,54 @@
+{% extends 'master.html' %}
+{% block content %}
+    <form method="post" action="{% url 'employees:store' %}">
+    {% csrf_token %}
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h3>Add Employee</h3>
+            </div>
+            <div class="card-body">
+                {% if errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                          {% for field_errors in errors.values %}
+                            {% for error in field_errors %}
+                              <li>{{ error }}</li>
+                            {% endfor %}
+                          {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="row align-items-center">
+                    <div class="col-2">
+                        <label for="name" class="col-form-label">Name</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" id="name" name="name" class="form-control ">
+                    </div>
+                </div>
+                <div class="row mt-2 align-items-center">
+                    <div class="col-2">
+                        <label for="designation_id" class="col-form-label">Designation</label>
+                    </div>
+                    <div class="col-4">
+                    <select name="designation_id" class="form-control">
+                         {% for designation in designations %}
+                            <option value="{{ designation.id }}">{{ designation.name }}</option>
+                          {% endfor %}
+                    </select>
+                    </div>
+                </div>
+                <div class="row mt-2 align-items-center">
+                    <div class="col-2">
+                        <label for="year_of_experience" class="col-form-label">Experience</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="number" id="year_of_experience" name="year_of_experience" class="form-control ">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                <a href="#"></a><button type="submit" class="btn btn-danger mt-3">Cancel</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

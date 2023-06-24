@@ -1,0 +1,67 @@
+{% extends 'master.html' %}
+{% block content %}
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <h3>Employees</h3>
+            <a href="{% url 'employees:create' %}"><button class="btn btn-primary">Create</button></a>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Designation</th>
+                        <th scope="col">Experience</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }} </th>
+                            <td>{{ employee.name }}</td>
+                            <td>{{ employee.designation.name }}</td>
+                            <td>{{ employee.year_of_experience }} Years</td>
+                            <td>
+                                <a href="{% url 'employees:edit' id=employee.id %}"><i class="fa fa-edit text-primary mx-2"></i></a>
+
+                                <a class="delete-button" item-id="{{ employee.id }}">
+                                   <i class="fa fa-trash text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    {% block scripts %}
+           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('.delete-button').on('click', function() {
+                    var itemID = $(this).attr('item-id');
+                    $.ajax({
+                        url: '/employees/'+ itemID +'/delete/',
+                        type: 'POST',
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            window.location.reload();
+                        },
+                        error: function(xhr, errmsg, err) {
+                            console.log(errmsg);
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endblock %}
+
+{% endblock %}
